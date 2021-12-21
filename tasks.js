@@ -79,6 +79,25 @@ function quit(){
   console.log('Quitting now, goodbye!')
   process.exit();
 }
+/**
+ * prints 
+ * "
+ * command        desciption
+ * ----------------------------------
+ * hello          greeting user.
+ * quit OR exit   end the application.
+ * help           show command.
+ * ----------------------------------
+ * "
+ * 
+ * This function is supposed to run when typing help 
+ * It give  a brief desciption for commands
+ *
+ * @returns {void}
+ */
+
+
+
 function help(){
   console.log(`
   command\t\tdesciption
