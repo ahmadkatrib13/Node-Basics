@@ -37,6 +37,7 @@ function onDataReceived(text) {
   if (text === 'quit\n' || text === 'exit\n' ) {
     quit();
   }
+
   else if(text.trim().split(" ")[0]==="hello"){
     hello(text.trim().substring(5));
   } else if(text === 'help\n'){
@@ -103,6 +104,9 @@ function help(){
   command\t\tdesciption
   ----------------------------------
   hello\t\t\tgreeting user.
+   |
+   -hello [argument]\tgreet saying 'hello [argument]!'
+
   quit OR exit\t\t\end the application
   help\t\t\tto show command.
   ----------------------------------
