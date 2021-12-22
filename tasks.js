@@ -116,6 +116,10 @@ function help() {
    |
    -hello [argument]\tgreet saying 'hello [argument]!'
 
+  remove\t\tremove the last  task from list.
+   |
+   -remove [index]\tremove the [index]th task from list.
+
   quit OR exit\t\t\end the application
   help\t\t\tto show command.
   ----------------------------------
@@ -138,8 +142,7 @@ function add(text) {
 
 function remove(index){
   if(index.length==0){List.pop(); return;} 
-  if(Number(num) >=1 && Number(num) <=List.length) {List.splice(index-1, 1);return;}
-  console.log("please enter a valid number")
+  if(Number(index) >=1 && Number(index) <=List.length) {List.splice(index-1, 1);return;}
 }
 
 
