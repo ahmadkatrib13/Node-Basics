@@ -9,7 +9,7 @@
  * @param  {string} name the name of the app
  * @returns {void}
  */
-function startApp(name){
+function startApp(name) {
   process.stdin.resume();
   process.stdin.setEncoding('utf8');
   process.stdin.on('data', onDataReceived);
@@ -34,18 +34,22 @@ function startApp(name){
  * @returns {void}
  */
 function onDataReceived(text) {
-  if (text === 'quit\n' || text === 'exit\n' ) {
+  if (text === 'quit\n' || text === 'exit\n') {
     quit();
-  }  if (text === 'list\n') {
+  } else if (text === 'list\n') {
+    list();
+  } else if (text === 'list\n') {
     list();
   }
-
-  else if(text.trim().split(" ")[0]==="hello"){
+  else if (text.trim().split(" ")[0] === "add") {
+    add(text.trim().substring(4));
+  } 
+  else if (text.trim().split(" ")[0] === "hello") {
     hello(text.trim().substring(5));
-  } else if(text === 'help\n'){
+  } else if (text === 'help\n') {
     help();
   }
-  else{
+  else {
     unknownCommand(text);
   }
 }
@@ -58,8 +62,8 @@ function onDataReceived(text) {
  * @param  {string} c the text received
  * @returns {void}
  */
-function unknownCommand(c){
-  console.log('unknown command: "'+c.trim()+'"')
+function unknownCommand(c) {
+  console.log('unknown command: "' + c.trim() + '"')
 }
 
 
@@ -68,7 +72,7 @@ function unknownCommand(c){
  *
  * @returns {void}
  */
-function hello(text){
+function hello(text) {
   console.log(`hello${text}!`)
 }
 
@@ -78,7 +82,7 @@ function hello(text){
  *
  * @returns {void}
  */
-function quit(){
+function quit() {
   console.log('Quitting now, goodbye!')
   process.exit();
 }
@@ -101,7 +105,7 @@ function quit(){
 
 
 
-function help(){
+function help() {
   console.log(`
   command\t\tdesciption
   ----------------------------------
@@ -113,16 +117,21 @@ function help(){
   help\t\t\tto show command.
   ----------------------------------
   `)
-} 
+}
 
 
-var List = Array("task1","task2");
-function list(){
+var List = Array("task1", "task2");
+
+function list() {
   console.log(
-    List.map((element,key)=>`${key+1} - ${element}`).join('\n')
+    List.map((element, key) => `${key + 1} - ${element}`).join('\n')
   )
 }
 
+function add(text) {
+  if(text.length==0){ console.log("you didn't input any data");return;}
+  List.push(text)
+}
 
 
 
