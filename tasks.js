@@ -43,6 +43,9 @@ function onDataReceived(text) {
   }
   else if (text.trim().split(" ")[0] === "add") {
     add(text.trim().substring(4));
+  }
+  else if (text.trim().split(" ")[0] === "remove") {
+    remove(text.trim().substring(6));
   } 
   else if (text.trim().split(" ")[0] === "hello") {
     hello(text.trim().substring(5));
@@ -131,6 +134,12 @@ function list() {
 function add(text) {
   if(text.length==0){ console.log("you didn't input any data");return;}
   List.push(text)
+}
+
+function remove(index){
+  if(index.length==0){List.pop(); return;} 
+  if(Number(num) >=1 && Number(num) <=List.length) {List.splice(index-1, 1);return;}
+  console.log("please enter a valid number")
 }
 
 
