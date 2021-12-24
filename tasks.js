@@ -45,13 +45,16 @@ function onDataReceived(text) {
     add(text.trim().substring(4));
   }
   else if (text.trim().split(" ")[0] === "remove") {
-    remove(text.trim().substring(6));
+    remove(text.trim().substring(7));
   } 
   else if (text.trim().split(" ")[0] === "hello") {
-    hello(text.trim().substring(5));
+    hello(text.trim().substring(6));
   } else if (text === 'help\n') {
     help();
+  } else if (text.trim().split(" ")[0]  === 'edit') {
+    edit(text.trim().substring(5));
   }
+
   else {
     unknownCommand(text);
   }
@@ -144,7 +147,15 @@ function remove(index){
   if(index.length==0){List.pop(); return;} 
   if(Number(index) >=1 && Number(index) <=List.length) {List.splice(index-1, 1);return;}
   console.log("please enter a valid number")
-
+}
+function edit(text){
+let arr = text.split(" ");
+if(text.length==0) {console.log("you entred empty arguments!");return;}
+if(isNaN(arr[0])){List[List.length-1] = text;return}
+if(arr[0]>=0 && arr[0]<=List.length-1) {
+  if(arr.length<=1){console.log("please entered empty text");return;}
+  let index = arr.shift()-1;List[index]= arr.join(" ");return;}
+console.log("please entered an invalid index");
 }
 
 
