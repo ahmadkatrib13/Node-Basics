@@ -53,7 +53,11 @@ function onDataReceived(text) {
     help();
   } else if (text.trim().split(" ")[0]  === 'edit') {
     edit(text.trim().substring(5));
-  }
+  } else if (text.trim().split(" ")[0] === "check") {
+    change(text.trim().substring(6),true);
+  } else if (text.trim().split(" ")[0] === "uncheck") {
+    change(text.trim().substring(8),false);
+  } 
   else {
     unknownCommand(text);
   }
@@ -172,15 +176,9 @@ function remove(index){
 }
 
 function change(index,status){
-  if(index.length==0){List[List.length-1].ChangeStatus(status); return;} 
   if(Number(index) >=1 && Number(index) <=List.length) {List[index-1].ChangeStatus(status);return;}
   console.log("please enter a valid number")
 }
-
-
-
-
-
 
 function edit(text){
 let arr = text.split(" ");
