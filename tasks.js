@@ -95,16 +95,9 @@ function quit() {
   console.log('Quitting now, goodbye!')
   process.exit();
 }
+
 /**
- * prints 
- * "
- * command        desciption
- * ----------------------------------
- * hello          greeting user.
- * quit OR exit   end the application.
- * help           show command.
- * ----------------------------------
- * "
+ * prints the a brief description for using commands
  * 
  * This function is supposed to run when typing help 
  * It give  a brief desciption for commands
@@ -122,11 +115,22 @@ function help() {
    |
    -hello [argument]\tgreet saying 'hello [argument]!'
 
-  remove\t\tremove the last  task from list.
+  add [text]\t\tadd new element to the list
+
+  remove\t\tremove the last task from list.
    |
    -remove [index]\tremove the [index]th task from list.
+  
+  edit [text]\t\tchange the last  task text to [text].
+   |
+   -edit [index] [text]\tchange the [index]th task text to [text].
+
+  check [index]\t\tset [index]th task status to be finished.
+  
+  uncheck [index]\tset [index]th task status to be unfinished.
 
   quit OR exit\t\t\end the application
+
   help\t\t\tto show command.
   ----------------------------------
   `)
