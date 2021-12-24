@@ -54,7 +54,6 @@ function onDataReceived(text) {
   } else if (text.trim().split(" ")[0]  === 'edit') {
     edit(text.trim().substring(5));
   }
-
   else {
     unknownCommand(text);
   }
@@ -129,18 +128,41 @@ function help() {
   `)
 }
 
+class Task {
+  constructor(text){
+    this.text=text;
+    this.done=false;
+  }
 
-var List = Array("task1", "task2");
+  getStatus(){
+    return this.done;
+  }
+  ChangeStatus(status){
+    this.done=status;
+  }
+  setText(text){
+    this.text = text;
+  }
+  toString(){
+    if(this.done) return `[✓] ${this.text}`;
+    return `[ ] ${this.text}`;
+  }
+}
+
+
+
+var List = Array(new Task("hello"),new Task("broda"));
 
 function list() {
+  if(List.length==0) {console.log("you have no task to do !!");return;}
   console.log(
-    List.map((element, key) => `${key + 1} - ${element}`).join('\n')
+    List.map((element, key) => `${key + 1} - ${element.toString()}`).join('\n')
   )
 }
 
 function add(text) {
   if(text.length==0){ console.log("you didn't input any data");return;}
-  List.push(text)
+  List.push(new Task(text))
 }
 
 function remove(index){
@@ -148,13 +170,25 @@ function remove(index){
   if(Number(index) >=1 && Number(index) <=List.length) {List.splice(index-1, 1);return;}
   console.log("please enter a valid number")
 }
+
+function change(index,status){
+  if(index.length==0){List[List.length-1].ChangeStatus(status); return;} 
+  if(Number(index) >=1 && Number(index) <=List.length) {List[index-1].ChangeStatus(status);return;}
+  console.log("please enter a valid number")
+}
+
+
+
+
+
+
 function edit(text){
 let arr = text.split(" ");
 if(text.length==0) {console.log("you entred empty arguments!");return;}
-if(isNaN(arr[0])){List[List.length-1] = text;return}
+if(isNaN(arr[0])){List[List.length-1].setText(text);return}
 if(arr[0]>=0 && arr[0]<=List.length-1) {
   if(arr.length<=1){console.log("please entered empty text");return;}
-  let index = arr.shift()-1;List[index]= arr.join(" ");return;}
+  let index = arr.shift()-1;List[index].setText(arr.join(" "));return;}
 console.log("please entered an invalid index");
 }
 
