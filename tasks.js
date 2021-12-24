@@ -21,7 +21,7 @@ class Task {
 }
 
 let tasks = [];
-let file = './database.json';
+let file = '';
 
 /**
  * Starts the application
@@ -40,14 +40,13 @@ function startApp(name) {
   console.log(`Welcome to ${name}'s application!`)
   console.log("--------------------")
   fs = require("fs"); 
-
-
+  file = process.argv[2] ||'database.json' ;
   
   try{
     let jsonData = JSON.parse(fs.readFileSync(file));
     tasks = Object.values(jsonData).map(element=>Object.setPrototypeOf(element,new Task));
   }catch{
-    console.log(file+"don't exist or corrupted, file will be wipped and filled again")
+    console.log(file+" don't exist or corrupted, file will be wipped and filled again")
   };
 }
 
