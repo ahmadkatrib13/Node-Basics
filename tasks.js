@@ -1,4 +1,28 @@
 
+class Task {
+  constructor(text,status){
+    this.text=text;
+    if(status===undefined )  status= false;
+    this.done=status;
+  }
+  getStatus(){
+    return this.done;
+  }
+  ChangeStatus(status){
+    this.done=status;
+  }
+  setText(text){
+    this.text = text;
+  }
+  toString(){
+    if(this.done) return `[✓] ${this.text}`;
+    return `[ ] ${this.text}`;
+  }
+}
+
+let tasks = [];
+let file = './database.json';
+
 /**
  * Starts the application
  * This is the function that is run when the app starts
@@ -15,6 +39,16 @@ function startApp(name) {
   process.stdin.on('data', onDataReceived);
   console.log(`Welcome to ${name}'s application!`)
   console.log("--------------------")
+  fs = require("fs"); 
+
+
+  
+  try{
+    let jsonData = JSON.parse(fs.readFileSync(file));
+    tasks = Object.values(jsonData).map(element=>Object.setPrototypeOf(element,new Task));
+  }catch{
+    console.log(file+"don't exist or corrupted, file will be wipped and filled again")
+  };
 }
 
 
@@ -35,9 +69,8 @@ function startApp(name) {
  */
 function onDataReceived(text) {
   if (text === 'quit\n' || text === 'exit\n') {
+    
     quit();
-  } else if (text === 'list\n') {
-    list();
   } else if (text === 'list\n') {
     list();
   }
@@ -61,6 +94,7 @@ function onDataReceived(text) {
   else {
     unknownCommand(text);
   }
+  
 }
 
 
@@ -93,7 +127,15 @@ function hello(text) {
  */
 function quit() {
   console.log('Quitting now, goodbye!')
-  process.exit();
+  try {
+    fs.writeFileSync(file, JSON.stringify(Object.assign({}, tasks)), (err)=>{
+      if (err) {console.log(err)}
+    });
+    console.log(`Data replaced in ${file}`)
+    process.exit();
+  } catch (error) {
+    console.error('Error! Data not saved!');
+  }
 }
 
 /**
@@ -136,61 +178,40 @@ function help() {
   `)
 }
 
-class Task {
-  constructor(text){
-    this.text=text;
-    this.done=false;
-  }
-
-  getStatus(){
-    return this.done;
-  }
-  ChangeStatus(status){
-    this.done=status;
-  }
-  setText(text){
-    this.text = text;
-  }
-  toString(){
-    if(this.done) return `[✓] ${this.text}`;
-    return `[ ] ${this.text}`;
-  }
-}
 
 
 
-var List = Array(new Task("hello"),new Task("broda"));
 
 function list() {
-  if(List.length==0) {console.log("you have no task to do !!");return;}
+  if(tasks.length==0) {console.log("you have no task to do !!");return;}
   console.log(
-    List.map((element, key) => `${key + 1} - ${element.toString()}`).join('\n')
+    tasks.map((element, key) => `${key + 1} - ${element.toString()}`).join('\n')
   )
 }
 
 function add(text) {
   if(text.length==0){ console.log("you didn't input any data");return;}
-  List.push(new Task(text))
+  tasks.push(new Task(text))
 }
 
 function remove(index){
-  if(index.length==0){List.pop(); return;} 
-  if(Number(index) >=1 && Number(index) <=List.length) {List.splice(index-1, 1);return;}
+  if(index.length==0){tasks.pop(); return;} 
+  if(Number(index) >=1 && Number(index) <=tasks.length) {tasks.splice(index-1, 1);return;}
   console.log("please enter a valid number")
 }
 
 function change(index,status){
-  if(Number(index) >=1 && Number(index) <=List.length) {List[index-1].ChangeStatus(status);return;}
+  if(Number(index) >=1 && Number(index) <=tasks.length) {tasks[index-1].ChangeStatus(status);return;}
   console.log("please enter a valid number")
 }
 
 function edit(text){
 let arr = text.split(" ");
 if(text.length==0) {console.log("you entred empty arguments!");return;}
-if(isNaN(arr[0])){List[List.length-1].setText(text);return}
-if(arr[0]>=0 && arr[0]<=List.length-1) {
+if(isNaN(arr[0])){tasks[tasks.length-1].setText(text);return}
+if(arr[0]>=0 && arr[0]<=tasks.length-1) {
   if(arr.length<=1){console.log("please entered empty text");return;}
-  let index = arr.shift()-1;List[index].setText(arr.join(" "));return;}
+  let index = arr.shift()-1;tasks[index].setText(arr.join(" "));return;}
 console.log("please entered an invalid index");
 }
 
